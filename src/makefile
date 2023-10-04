@@ -1,17 +1,21 @@
 # src=$(wildcard ./*.cpp)
-src=server.cpp \
-	client.cpp
-target=$(patsubst %.cpp,%.out,$(src))
+# src=server.cpp \
+# 	client.cpp
+# OBJECT=$(patsubst %.cpp,%.o,$(src))
+other =	Epoll.cpp \
+		InetAddress.cpp \
+		Socket.cpp
 CC=g++
 CPPFLAGS= -o
 
-server:$(target)
-	./$<
+run:$(other)
+	$(CC) util.cpp server.cpp $(other) $(CPPFLAGS) server
+	$(CC) util.cpp client.cpp $(other)  $(CPPFLAGS) client
 
 
-%.out:%.cpp
-	$(CC) util.cpp $< $(CPPFLAGS) $@ 
+# %.o:%.cpp
+# 	$(CC) $(CPPFLAGS) $< -o $@ 
 	
 
 clean:
-	rm -rf *.out *out server client
+	rm -rf *.out *out server client *.o

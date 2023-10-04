@@ -5,21 +5,28 @@
 #include <stdio.h>
 #include "util.h"
 
+#include "Socket.h"
+#include "InetAddress.h"
+
 #define BUFFER_SIZE 1024
 int main(){
-    int i;
-    int sockfd=socket(AF_INET,SOCK_STREAM,0);
-    errif(sockfd==-1,"socket create error");
+    // int i;
+    // int sockfd=socket(AF_INET,SOCK_STREAM,0);
+    // errif(sockfd==-1,"socket create error");
+    Socket *clnt_sock=new Socket(); 
 
-    struct sockaddr_in client_addr;
-    bzero(&client_addr,sizeof(client_addr));
-    client_addr.sin_family=AF_INET;
-    client_addr.sin_addr.s_addr=inet_addr("127.0.0.1");
-    client_addr.sin_port=htons(8088);
+    // struct sockaddr_in client_addr;
+    // bzero(&client_addr,sizeof(client_addr));
+    // client_addr.sin_family=AF_INET;
+    // client_addr.sin_addr.s_addr=inet_addr("127.0.0.1");
+    // client_addr.sin_port=htons(8088);
+    InetAddress *clnt_addr=new InetAddress("127.0.0.1",8088);
 
-    i=connect(sockfd,(sockaddr*)&client_addr,sizeof(client_addr));
-    errif(i==-1,"socket connect error");
+    // i=connect(sockfd,(sockaddr*)&client_addr,sizeof(client_addr));
+    // errif(i==-1,"socket connect error");
+    clnt_sock->connect(clnt_addr);
 
+    int sockfd=clnt_sock->getFd();
     while (true)
     {
         char buf[BUFFER_SIZE];  //在这个版本，buf大小必须大于或等于服务器端buf大小，不然会出错，想想为什么？

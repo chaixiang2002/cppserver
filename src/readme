@@ -1,15 +1,15 @@
+server.cpp -> Socket.cpp  -> InetAddress.cpp-> Epoll.cpp 
 
-
+client.cpp
+util.cpp
 新增功能：
-1. 引入了epoll对象来处理多个客户端，支持多个客户
+1. 模块化
+2. 遵循面向对象的方法用重写c++重写server、client
 
-新增头文件
-#include <fcntl.h>      ->  将socket设置为非阻塞的函数
-#include <sys/epoll.h>  ->  引入epoll对象
-#include <errno.h>      ->  错误码 
+新增文件
+1. Epoll.cpp            封装epoll
+2. InetAddress.cpp      封装地址
+3. Socket.cpp           封装socket        
 
 总结：
-1. 准备好资源
-2. 把资源初始化清零
-3. 处理异常
 
