@@ -1,4 +1,11 @@
+问题2：server是怎么处理建立连接后的client请求的？
+1. n=read(clientfd,buf,size)
+    从客户端clientfd里读取传输进来的数据，并将数据
+存放到buf中
 
+2. n=write(clientfd,buf,cnt)
+    往客户端clientfd写出数据cnt个字节的数据，写出的
+数据存放在buf中，写成功的数据长度为n
 
 新增功能：
 1. 异常函数

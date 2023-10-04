@@ -1,0 +1,12 @@
+问题1：编写一个server的步骤是怎么样的？
+
+1. serverfd=socket(opt)
+    调用socket()方法创建一个对应的serverfd
+
+2. bind(serverfd,address)
+    调用bind()方法将fd和指定的地址(ip+port)进行绑定
+
+3. listen(serverfd)
+    调用listen()方法监听前面绑定时指定的地址
+4. clientfd=accept(serverfd)
+    进入无限循环循环等待接受客户端连接请求

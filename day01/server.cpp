@@ -46,7 +46,6 @@ int main(){
             errif(true, "socket read error");
         }
         
-        
     }
     close(sockfd);
     return 0;

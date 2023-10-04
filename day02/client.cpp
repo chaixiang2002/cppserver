@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include "util.h"
 
-
+#define BUFFER_SIZE 1024
 int main(){
     int i;
     int sockfd=socket(AF_INET,SOCK_STREAM,0);
@@ -22,12 +22,18 @@ int main(){
 
     while (true)
     {
-        char buf[1024];
-        bzero(&buf,sizeof(buf));
+        char buf[BUFFER_SIZE];  //在这个版本，buf大小必须大于或等于服务器端buf大小，不然会出错，想想为什么？
+        bzero(&buf, sizeof(buf));
         scanf("%s", buf);
-        ssize_t read_bytes=write(sockfd,buf,sizeof(buf));
-        if(read_bytes>0){
-            printf("message from server: %s\n", buf);          // 打印buf
+        ssize_t write_bytes = write(sockfd, buf, sizeof(buf));
+        if(write_bytes == -1){
+            printf("socket already disconnected, can't write any more!\n");
+            break;
+        }
+        bzero(&buf, sizeof(buf));
+        ssize_t read_bytes = read(sockfd, buf, sizeof(buf));
+        if(read_bytes > 0){
+            printf("message from server: %s\n", buf);
         }else if(read_bytes == 0){
             printf("server socket disconnected!\n");
             break;
