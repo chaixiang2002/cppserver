@@ -1,0 +1,9 @@
+
+
+新增功能：
+1. 引入了epoll对象来处理多个客户端，支持多个客户
+
+新增头文件
+#include <fcntl.h>      ->  将socket设置为非阻塞的函数
+#include <sys/epoll.h>  ->  引入epoll对象
+#include <errno.h>      ->  错误码 
