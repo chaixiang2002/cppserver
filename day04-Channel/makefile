@@ -12,7 +12,6 @@ CPPFLAGS= -o
 run:$(other)
 	$(CC) util.cpp server.cpp $(other) $(CPPFLAGS) server
 	$(CC) util.cpp client.cpp $(other)  $(CPPFLAGS) client
-	./server
 
 
 # %.o:%.cpp
