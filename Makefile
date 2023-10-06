@@ -1,4 +1,5 @@
 client:
+	clear
 	./src/client
 
 server:
