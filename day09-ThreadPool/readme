@@ -56,7 +56,7 @@ Acceptor类：    的处理事件函数（也就是新建连接功能）被放�
 Connection类：  则没有必要这么做，处理事件的逻辑应该由Connection类本身来完成
 
 新增功能：
-1. 服务器新添线程池ThreadPool功能
+1. 服务器新添线程池ThreadPool
 
 
 文件：
