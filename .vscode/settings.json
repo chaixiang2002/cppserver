@@ -40,5 +40,6 @@
         "future": "cpp",
         "atomic": "cpp",
         "string": "cpp"
-    }
+    },
+    "cmake.sourceDirectory": "/root/code/cppserver/tmp"
 }

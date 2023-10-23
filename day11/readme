@@ -1,0 +1,133 @@
+new EventLoop() => loop
+    - new Epoll() => ep
+
+new Server(loop) => server
+    - server.loop=loop
+    - new Acceptor()=>acceptor
+        - new Socket()=>serv_sock
+        - new Channel()=>serv_channel
+            - serv_channel.loop=loop
+            - serv_channel.sock=serv_sock
+            - serv_channel.callback=&Acceptor::acceptConnection
+            - serv_channel.enableReading()--> 
+                - serv_channel.loop.epoll.add(serv_channel)
+    - acceptor.setNewConnectionCallback(Server::newConnection(Socket *serv_sock))
+
+loop->loop()
+    - loop.ep.epoll_wait() => vector<Channel*> chs
+        - chs.handleEvent()
+            - if(Acceptor::acceptConnection())
+                - new Socket()=>clnt_sock
+                - Server::newConnectionCallback(clnt_sock)
+                    - new Connection()=>conn
+                        - new Channel(loop, sock)=>clntChannel
+                            - serv_channel.loop=loop
+                            - serv_channel.sock=clnt_sock
+                            - serv_channel.callback=&Connection::echo
+                            - serv_channel.enableReading()--> 
+                                - serv_channel.loop.epoll.add(serv_channel)
+            - else
+                - handleReadEvent()
+
+函数：
+; 1. 创建loop,创建中创建loop.epoll
+; 2. 创建一个server，让server.loop=loop
+;     2.1 创建一个server时，创建serv_sock,创建servChannel。
+;         2.1.1 创建这个servChannel时，让channel.loop=server.loop,channel.sock=serv_sock;
+;     2.2 在创建一个server时，让servChannel可读。
+;         2.2.1 让servChannel可读时，让servChannel.loop.epoll 添加该servChannel。
+
+; 3. loop(),server.loop.epoll.epoll_wait() 得到vector<Channel*> chs
+;     3.1 不断处理epoll待处理的channel
+
+Acceptor类:
+    - 类存在于事件驱动EventLoop类中，也就是Reactor模式的main-Reactor
+    - 类中的socket fd就是服务器监听的socket fd，每一个Acceptor对应一个socket fd
+    - 这个类也通过一个独有的Channel负责分发到epoll，该Channel的事件处理函数handleEvent()会调用Acceptor中的接受连接函数来新建一个TCP连接
+
+Connection类:
+    - 类存在于事件驱动EventLoop类中，也就是Reactor模式的main-Reactor
+    - 类中的socket fd就是客户端的socket fd，每一个Connection对应一个socket fd
+    - 每一个类的实例通过一个独有的Channel负责分发到epoll，该Channel的事件处理函数handleEvent()会调用Connection中的事件处理函数来响应客户端请求
+
+Connection类和Acceptor类是平行关系  
+他们都直接由Server管理  
+Acceptor类：    的处理事件函数（也就是新建连接功能）被放到了Server类中
+Connection类：  则没有必要这么做，处理事件的逻辑应该由Connection类本身来完成
+
+新增功能：
+1. 完善服务器线程池，
+比如，由于任务队列的添加、取出都存在拷贝操作，线程池不会有太好的性能
+正确做法是使用右值移动、完美转发等阻止拷贝
+另外线程池只能接受std::function<void()>类型的参数，所以函数参数需要事先使用std::bind()，并且无法得到返回值。
+2. 需要使用网络库写一个简单的多线程高并发测试程序
+文件：
+修改 ThreadPool.cpp         ThreadPool::add用模板写
+
+
+
+总结：
+InetAddress
+    - addr
+    - len
+Socket
+    - fd
+      bind(addr)
+      listen()
+      setnonBlocking()
+      connection(addr)
+      accept(addr)
+Channel
+    * loop
+    - fd
+    - events
+    - revents
+    - inEpoll
+    - callback-Funtion
+      handleEvent()
+      enableReading()
+Epoll
+    - epfd
+    * events
+      addFd(int fd,uint32_t op)
+      updateChannel(Channel*)
+      poll(int timeout=-1) =>vector<Channel*>
+Acceptor
+    * loop
+    * sock
+    * channel
+    - newConnectionCallback-Funtion
+      acceptConnection()
+Connection
+    * loop
+    * sock
+    * channel
+    - deleteConnectionCallback-Funtion
+      echo(sock)
+EventLoop
+    * epoll
+    - quit
+      loop()
+      updateChannel(channel*)
+Server
+    * loop
+    * acceptor
+    - map<int, Connection*>
+      handleReadEvent(int)
+      newConnection(sock*)
+      deleteConnection(sock*)
+
+
+ThreadPool
+    - vector<thread> threads
+    - queue<function<void()>> tasks
+    - tasks_mtx
+    - condition_variable
+    - stop
+      add(function<void()>)
+
+      
+
+其他：
+#include <string.h>   bzero(&buf, sizeof(buf));
+#include <unistd.h>   read(),write()
