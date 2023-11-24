@@ -48,7 +48,8 @@ int main(){
         int nfds=epoll_wait(epfd,events,MAX_EVENTS,-1);// 把初始化好的事件组events 给epoll对象，让epoll把已准备好的放入该数组
         errif(nfds==-1,"epoll wait error");
         for (int i = 0; i < nfds; i++ ) // 一个一个处理 来的事件
-        {                   
+        {     
+            printf("%d, %d----------\n",i,events[i].data.fd);              
             if(events[i].data.fd==sockfd){  // 如果有事的是 server端
                 struct sockaddr_in clnt_addr;
                 // bzero(&clnt_addr,sizeof(clnt_addr));
@@ -57,7 +58,7 @@ int main(){
 
                 int clnt_sockfd=accept(sockfd,(sockaddr*)&clnt_addr,&clint_addr_len);
                 errif(clnt_sockfd==-1,"socket accept error");
-                printf("new client fd: %d   IP: %d   Port: %d  \n",clnt_sockfd,inet_ntoa(clnt_addr.sin_addr),ntohs(clnt_addr.sin_port));
+                printf("new client fd: %d   IP: %s   Port: %d  \n",clnt_sockfd,inet_ntoa(clnt_addr.sin_addr),ntohs(clnt_addr.sin_port));
 
                 bzero(&ev,sizeof(ev));
                 ev.data.fd=clnt_sockfd;
@@ -80,7 +81,7 @@ int main(){
                         printf("finish reading once, errno: %d\n", errno);
                         break;
                     }else if(read_bytes == 0){
-                        printf("EOF, client fd %d disconnected\n", events[i].data.fd);
+                        printf("EOF, client fd % disconnected\n", events[i].data.fd);
                         close(events[i].data.fd);   //关闭socket会自动将文件描述符从epoll树上移除
                         break;
                     } 

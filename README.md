@@ -4,6 +4,13 @@
 
 一个以事件驱动面向 Linux 的 C/C++服务器，采用主从 Reactor 多线程模式,基于 epoll 的高并发服务器实现。
 
+- day00 socket确认链接
+- day01 client阻塞发送，单方面c->s
+- day02 client非阻塞发送  ，c->s,s->c
+- day03 epoll s可以连接更多的 c
+- day04 封装channel，每个fd有每个chanel实现自己要做的事
+- day05 Eventloop,eloop有epoll，负责更新chan和 todo_chananl的事，server提供2种事，新连接、回复 
+
 
 ##### 主要工作：
 

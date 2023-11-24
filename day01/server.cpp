@@ -27,7 +27,7 @@ int main(){
     int clnt_sockfd=accept(sockfd,(sockaddr*)&clnt_addr,&clint_addr_len);
     errif(clnt_sockfd==-1,"socket accept error");
 
-    printf("new client fd: %d   IP: %d   Port: %d  \n",clnt_sockfd,inet_ntoa(clnt_addr.sin_addr),ntohs(clnt_addr.sin_port));
+    printf("new client fd: %d   IP: %s   Port: %d  \n",clnt_sockfd,inet_ntoa(clnt_addr.sin_addr),ntohs(clnt_addr.sin_port));
     while (true)
     {
         char buf[1024];

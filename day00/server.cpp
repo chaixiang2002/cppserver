@@ -24,6 +24,6 @@ int main(){
     bzero(&clnt_addr,sizeof(clnt_addr));
     int clnt_sockfd=accept(sockfd,(sockaddr*)&clnt_addr,&clint_addr_len);
 
-    printf("new client fd: %d   IP: %d   Port: %d  \n",clnt_sockfd,inet_ntoa(clnt_addr.sin_addr),ntohs(clnt_addr.sin_port));
+    printf("new client fd: %d   IP: %s   Port: %d  \n",clnt_sockfd,inet_ntoa(clnt_addr.sin_addr),ntohs(clnt_addr.sin_port));
     return 0;
 }

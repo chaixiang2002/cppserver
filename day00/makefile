@@ -4,7 +4,7 @@ CC=g++
 CPPFLAGS= -o
 
 server:$(target)
-	./$<
+	./server.out
 
 
 %.out:%.cpp
