@@ -6,42 +6,36 @@
 #include "util.h"
 
 #define BUFFER_SIZE 1024
-int main(){
-    int i;
-    int sockfd=socket(AF_INET,SOCK_DGRAM,0);
-    errif(sockfd==-1,"socket create error");
 
-    struct sockaddr_in client_addr;
-    bzero(&client_addr,sizeof(client_addr));
-    client_addr.sin_family=AF_INET;
-    client_addr.sin_addr.s_addr=inet_addr("127.0.0.1");
-    client_addr.sin_port=htons(8088);
+int main() {
+    int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
+    errif(sockfd == -1, "socket创建错误");
 
-    i=connect(sockfd,(sockaddr*)&client_addr,sizeof(client_addr));
-    errif(i==-1,"socket connect error");
+    struct sockaddr_in server_addr;
+    bzero(&server_addr, sizeof(server_addr));
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
+    server_addr.sin_port = htons(8088);
 
-    while (true)
-    {
-        char buf[BUFFER_SIZE];  //在这个版本，buf大小必须大于或等于服务器端buf大小，不然会出错，想想为什么？
+    while (true) {
+        char buf[BUFFER_SIZE];
         bzero(&buf, sizeof(buf));
         scanf("%s", buf);
-        ssize_t write_bytes = write(sockfd, buf, sizeof(buf));
-        if(write_bytes == -1){
-            printf("socket already disconnected, can't write any more!\n");
-            break;
-        }
+
+        ssize_t send_bytes = sendto(sockfd, buf, strlen(buf), 0, (struct sockaddr*)&server_addr, sizeof(server_addr));
+        errif(send_bytes == -1, "socket发送错误");
+
+        struct sockaddr_in server_response_addr;
+        socklen_t server_response_addr_len = sizeof(server_response_addr);
+        bzero(&server_response_addr, sizeof(server_response_addr));
         bzero(&buf, sizeof(buf));
-        ssize_t read_bytes = read(sockfd, buf, sizeof(buf));
-        if(read_bytes > 0){
-            printf("message from server: %s\n", buf);
-        }else if(read_bytes == 0){
-            printf("server socket disconnected!\n");
-            break;
-        }else if(read_bytes == -1){
-            close(sockfd);
-            errif(true, "socket read error");
-        }
+
+        ssize_t recv_bytes = recvfrom(sockfd, buf, sizeof(buf), 0, (struct sockaddr*)&server_response_addr, &server_response_addr_len);
+        errif(recv_bytes == -1, "socket接收错误");
+        
+        printf("来自服务器的消息：%s\n", buf);
     }
+
     close(sockfd);
     return 0;
 }
