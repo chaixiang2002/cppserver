@@ -9,8 +9,17 @@
 - day02 client非阻塞发送  ，c->s,s->c
 - day03 epoll s可以连接更多的 c
 - day04 封装channel，每个fd有每个chanel实现自己要做的事
-- day05 Eventloop,eloop有epoll，负责更新chan和 todo_chananl的事，server提供2种事，新连接、回复 
-
+- day05 Eventloop有epoll，epoll有channals，server提供2种事，新连接、回复 
+- day06 引入acceptor，新链接由他处理，处理的函数还是Server的
+- day07 引入connection，接受新链接的事交给acceptor，创建新链接交给connection，数据的响应交给connection::echo  
+server
+-acceptor、connection、
+-channals、
+- day08 引入了buffer，不在受限长度
+- day09 ???ThreadPool真的用到了吗？
+- day10 test
+- day11 完美转发
+- day14
 
 ##### 主要工作：
 

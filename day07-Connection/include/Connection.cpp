@@ -3,7 +3,8 @@
 #include "Socket.h"
 #include <string.h>
 #include <unistd.h>
-
+#include <cstdio>
+#include <cerrno>
 #define READ_BUFFER 1024
 using std::function;
 Connection::Connection(EventLoop *_loop,Socket *_sock):loop(_loop),sock(_sock)

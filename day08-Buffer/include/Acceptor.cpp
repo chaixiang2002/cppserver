@@ -3,7 +3,7 @@
 #include "InetAddress.h"
 #include "Server.h"
 #include "Channel.h"
-
+#include <cstdio>
 using std::function;
 
 Acceptor::Acceptor(EventLoop *_loop):loop(_loop)

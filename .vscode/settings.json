@@ -41,5 +41,6 @@
         "atomic": "cpp",
         "string": "cpp"
     },
-    "cmake.sourceDirectory": "/root/code/cppserver/src"
+    "cmake.sourceDirectory": "/root/code/cppserver/src",
+    "cmake.configureOnOpen": false
 }
