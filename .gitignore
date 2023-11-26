@@ -10,6 +10,9 @@ tmp/**
 
 .cache
 
+*release
+*.zip
+*tar
 
 
 
