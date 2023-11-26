@@ -3,4 +3,7 @@
 
 void errif(bool, const char*);//???????
 
+struct sockaddr_in get_addr(const char *filename);
+
+
 #endif

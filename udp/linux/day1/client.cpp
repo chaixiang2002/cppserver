@@ -6,17 +6,19 @@
 #include "util.h"
 
 #define BUFFER_SIZE 1024
-
+ 
 int main() {
     int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
     errif(sockfd == -1, "socket创建错误");
 
-    struct sockaddr_in server_addr;
-    bzero(&server_addr, sizeof(server_addr));
-    server_addr.sin_family = AF_INET;
-    server_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
-    server_addr.sin_port = htons(8088);
-
+    struct sockaddr_in server_addr=get_addr("/root/code/cppserver/udp/linux/day1/client_config.txt");
+    // bzero(&server_addr, sizeof(server_addr));
+    // server_addr.sin_family = AF_INET;
+    // // server_addr.sin_addr.s_addr = inet_addr("0.0.0.0");
+    // // server_addr.sin_addr.s_addr = inet_addr("192.168.0.14");
+    // server_addr.sin_addr.s_addr = inet_addr("124.71.45.252");
+    // server_addr.sin_port = htons(8088);
+    
     while (true) {
         char buf[BUFFER_SIZE];
         bzero(&buf, sizeof(buf));

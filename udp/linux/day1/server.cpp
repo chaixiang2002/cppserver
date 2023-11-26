@@ -16,15 +16,28 @@ void setnonblocking(int fd){
 }
 
 int main() {
+    // FILE *file = fopen("server_config.txt", "r");
+    // if (file == NULL) {
+    //     printf("无法打开配置文件\n");
+    //     return 1;
+    // }
+
+    // char ip[16];
+    // int port;
+    // fscanf(file, "IP=%s\nPORT=%d", ip, &port);
+    // fclose(file);
+
     int sockfd = socket(AF_INET, SOCK_DGRAM, 0);
     errif(sockfd == -1, "socket创建错误");
-
-    struct sockaddr_in serv_addr;
-    bzero(&serv_addr, sizeof(serv_addr));
-    serv_addr.sin_family = AF_INET;
-    serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
-    serv_addr.sin_port = htons(8088);
-
+  
+    struct sockaddr_in serv_addr=get_addr("/root/code/cppserver/udp/linux/day1/server_config.txt");
+    // bzero(&serv_addr, sizeof(serv_addr));
+    // serv_addr.sin_family = AF_INET;
+    // serv_addr.sin_addr.s_addr = inet_addr(ip);
+    // // serv_addr.sin_addr.s_addr = htons(INADDR_ANY);
+    // // serv_addr.sin_addr.s_addr = inet_addr("0.0.0.0");
+    // serv_addr.sin_port = htons(port);
+   
     errif(bind(sockfd, (sockaddr*)&serv_addr, sizeof(serv_addr)) == -1, "socket绑定错误");
 
     int epfd = epoll_create1(0);
