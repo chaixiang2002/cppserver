@@ -30,5 +30,8 @@ void Buffer::clear(){
 }
 void Buffer::getline(){
     buf.clear();
-    std::getline(std::cin,buf);
+    while (buf.empty())
+    {
+        std::getline(std::cin, buf);
+    }
 }
