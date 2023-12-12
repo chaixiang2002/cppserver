@@ -21,6 +21,10 @@ server
 - day11 完美转发
 - day14
 
+- demo-httpserver 解析http请求和响应
+- demo-fileserver 文件的传输和接受
+
+
 ##### 主要工作：
 
 1. 封装 epoll，从请求驱动变为事件驱动。
@@ -89,3 +93,30 @@ cmake
 服务器端：成功处理请求，没有崩溃
 
 ![1699019300571](image/README/1699019300571.png)
+
+
+##### http解析
+
+1. 设置http服务器的地址和端口
+![a](image-1.png)
+
+2. 把web文件放入demo-httpserver/resource中
+![Alt text](image-2.png)
+
+3. 运行http服务器
+
+```bash
+./cppserver/demo-httpserver/build/httpepoll
+```
+
+4. 浏览器访问该地址和网页
+![imgage](image.png)
+
+
+
+##### 文件传输
+1. 设置ip和端口，要传输的文件地址
+![Alt text](image-3.png)
+2. 运行服务端和客户端
+![Alt text](image-4.png)
+3. 测试结果

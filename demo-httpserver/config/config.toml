@@ -1,0 +1,10 @@
+[server]
+ip = "192.168.127.130"
+port = 8088
+RESOURCE_directoryPath="/home/snow/code/netserver/resource"
+
+[client]
+ip = "192.168.127.130"
+port = 9007
+filename = "codelldb-x86_64-linux.vsix"
+filesize = 48221069

@@ -1,0 +1,9 @@
+[server]
+ip = "192.168.127.130"
+port = 8089
+
+[client]
+ip = "192.168.127.130"
+port = 8089
+filename = "codelldb-x86_64-linux.vsix"
+filesize = 48221069
